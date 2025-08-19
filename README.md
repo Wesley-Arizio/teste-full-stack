@@ -14,7 +14,7 @@ yarn dev
 ```
 
 #### Requisitos para o teste
-- Um front-end desenvolvido em Next.js ou React Native, incorporando as seguintes funcionalidades:
+- Um front-end desenvolvido em React Native, incorporando as seguintes funcionalidades:
     - Listagem de usuarios
     - Criação de usuarios
     - Exclusão de usuarios
@@ -26,6 +26,8 @@ yarn dev
     - POST - user/create
     - DELETE - user/delete/:id
     - PUT - user/:id/edit
+      
+ - O candidato deve fazer o deploy da aplicação de forma publica para ser analisada.
 
 #### Pontos que serão avaliados
 - Organização
