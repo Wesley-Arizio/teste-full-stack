@@ -6,10 +6,10 @@ import { createUserSchema } from "./schema/userSchema";
 const routes = Router();
 const userController = createUserController();
 
-routes.get("/user/list", userController.listUsers.bind(userController));
-routes.get("/user/:id", userController.getUser.bind(userController));
-routes.post("/user/create", validate(createUserSchema), userController.createUser.bind(userController));
-routes.delete("/user/delete/:id", userController.deleteUser.bind(userController));
-routes.put("/user/:id/edit", userController.updateUser.bind(userController));
+routes.get("/user/list", userController.listUsers);
+routes.get("/user/:id", userController.getUser);
+routes.post("/user/create", validate(createUserSchema), userController.createUser);
+routes.delete("/user/delete/:id", userController.deleteUser);
+routes.put("/user/:id/edit", userController.updateUser);
 
 export { routes }
