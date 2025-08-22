@@ -9,11 +9,11 @@ export const validate =
       next();
     } catch (err: any) {
       console.error(err);
-    if (err instanceof z.ZodError) {
-          return res.status(400).json({
-            error: true,
-            message: z.flattenError(err),
-          });
-        }
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({
+          error: true,
+          message: z.flattenError(err),
+        });
       }
+    }
   };

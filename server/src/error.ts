@@ -1,13 +1,13 @@
 interface AppErrorConstructor {
-    message?: string,
-    status: number
+  message?: string;
+  status: number;
 }
 
 export class AppError extends Error {
-    status;
-    constructor({ message, status}: AppErrorConstructor ) {
-        super(message)
+  status;
+  constructor({ message, status }: AppErrorConstructor) {
+    super(message);
 
-        this.status = status;
-    }
+    this.status = status;
+  }
 }

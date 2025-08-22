@@ -2,7 +2,7 @@ import { AppError } from "../error";
 import { UserRepository } from "../repository/userRepository";
 import { ICreateUser, IUpdateUser } from "../schema/userSchema";
 
-export type IUpdateUserWithId = IUpdateUser & { id: number };;
+export type IUpdateUserWithId = IUpdateUser & { id: number };
 
 export class UserService {
   constructor(private userRepository: UserRepository) {}
@@ -19,11 +19,11 @@ export class UserService {
     if (!user) {
       throw new AppError({
         message: "User Not Found",
-        status: 404
-      })
+        status: 404,
+      });
     }
 
-    return { user }
+    return { user };
   }
 
   async createUser({ user }: ICreateUser) {

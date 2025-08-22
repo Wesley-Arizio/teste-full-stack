@@ -4,13 +4,11 @@ export const createUserSchema = z.object({
   user: z.object({
     name: z.string().nonempty("Name cannot be empty").optional(),
     email: z.email(),
-    birthdate: z
-      .string()
-      .refine((val) => !val || !isNaN(Date.parse(val)), {
-        message: "Invalid birthdate format, expected ISO 8601",
-      }),
+    birthdate: z.string().refine((val) => !val || !isNaN(Date.parse(val)), {
+      message: "Invalid birthdate format, expected ISO 8601",
+    }),
     address: z.string().nonempty("Address cannot be empty").optional(),
-  })
+  }),
 });
 
 export const updateUserSchema = z.object({
