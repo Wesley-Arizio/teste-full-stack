@@ -1,6 +1,8 @@
 import { AppError } from "../error";
 import { UserRepository } from "../repository/userRepository";
-import { ICreateUser } from "../schema/userSchema";
+import { ICreateUser, IUpdateUser } from "../schema/userSchema";
+
+export type IUpdateUserWithId = IUpdateUser & { id: number };;
 
 export class UserService {
   constructor(private userRepository: UserRepository) {}
@@ -11,14 +13,21 @@ export class UserService {
     return { users };
   }
 
-  async getUser() {
-    console.log("hello word");
+  async getUser(id: number) {
+    const user = await this.userRepository.getUser(id);
 
-    return { ok: true };
+    if (!user) {
+      throw new AppError({
+        message: "User Not Found",
+        status: 404
+      })
+    }
+
+    return { user }
   }
 
   async createUser({ user }: ICreateUser) {
-    const exists = await this.userRepository.exists(user.email);
+    const exists = await this.userRepository.exists({ email: user.email });
 
     if (exists) {
       throw new AppError({
@@ -30,15 +39,31 @@ export class UserService {
     return this.userRepository.createUser({ user });
   }
 
-  async deleteUser() {
-    console.log("hello word");
+  async deleteUser(id: number) {
+    const exists = await this.userRepository.exists({ id });
 
-    return { ok: true };
+    if (!exists) {
+      throw new AppError({
+        message: "User Not Found",
+        status: 404,
+      });
+    }
+
+    const deleted = await this.userRepository.deleteUser(id);
+    return { deleted };
   }
 
-  async updateUser() {
-    console.log("hello word");
+  async updateUser({ user, id }: IUpdateUserWithId) {
+    const exists = await this.userRepository.exists({ id });
 
-    return { ok: true };
+    if (!exists) {
+      throw new AppError({
+        message: "User Not Found",
+        status: 404,
+      });
+    }
+
+    const updated = await this.userRepository.updateUser({ user, id });
+    return { updated };
   }
 }

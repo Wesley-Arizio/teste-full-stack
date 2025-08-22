@@ -2,6 +2,7 @@ import { Repository } from "typeorm";
 import { database } from "../dataSource";
 import { User } from "../entities/User";
 import { ICreateUser } from "../schema/userSchema";
+import { IUpdateUserWithId } from "../service/userService";
 
 export class UserRepository {
     private repository: Repository<User>
@@ -9,8 +10,12 @@ export class UserRepository {
         this.repository = database.getRepository(User)
     }
 
-    async exists(email: string): Promise<boolean> {
-        return this.repository.exist({ where: { email }});
+    async exists({ email, id }: { email?: string, id?: number }): Promise<boolean> {
+        if (email) {
+            return this.repository.exist({ where: { email }});
+        }
+
+        return this.repository.exist({ where: { id }});
     }
 
     async listAll(): Promise<User[]> {
@@ -26,5 +31,17 @@ export class UserRepository {
         });
 
         return this.repository.save(userEntity);
+    }
+
+    async getUser(id: number): Promise<User | null> {
+        return this.repository.findOne({ where: { id } })
+    }
+
+    async deleteUser(id: number): Promise<boolean> {
+        return !!((await this.repository.delete({ id })).affected);
+    }
+
+    async updateUser({ user, id  }: IUpdateUserWithId) {
+        return !!((await this.repository.update({ id }, user)).affected);
     }
 }
