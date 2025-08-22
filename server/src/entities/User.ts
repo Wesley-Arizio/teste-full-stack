@@ -5,11 +5,11 @@ export class User {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ type: "varchar", nullable: true })
-    name?: string;
+    @Column({ type: "varchar" })
+    name: string;
 
-    @Column({ type: "varchar", unique: true, nullable: true })
-    email?: string;
+    @Column({ type: "varchar", unique: true })
+    email: string;
 
     @Column({ type: "varchar", nullable: true })
     address?: string;
