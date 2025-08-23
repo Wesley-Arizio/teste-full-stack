@@ -1,6 +1,17 @@
+import { useEffect, useState } from "react";
 import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
 
-function UserCard() {
+import { getUsers } from "@/api/userService";
+import { User } from "@/api/interfaces";
+
+import Toast from "react-native-toast-message";
+
+interface IUserCard {
+  id: string;
+  email: string;
+}
+
+function UserCard({ id, email }: IUserCard) {
   return (
     <TouchableOpacity
       accessibilityHint="View details about the user"
@@ -18,9 +29,13 @@ function UserCard() {
         justifyContent: "space-between",
       }}
     >
-      <View style={{ display: "flex", flexDirection: "row" }}>
-        <Text style={{ marginRight: 10 }}>Id</Text>
-        <Text>User</Text>
+      <View style={{ flex: 2, display: "flex", flexDirection: "row" }}>
+        <Text style={{ marginRight: 10 }}>{id}</Text>
+        <View style={{ flex: 1, marginRight: 10 }}>
+          <Text numberOfLines={1} ellipsizeMode="tail">
+            {email}
+          </Text>
+        </View>
       </View>
       <TouchableOpacity onPress={() => {}}>
         <Image
@@ -37,24 +52,39 @@ function UserCard() {
 }
 
 function UsersList() {
-  const users = [
-    {
-      id: 1,
-      name: "Erick",
-    },
-    {
-      id: 2,
-      name: "John",
-    },
-    {
-      id: 3,
-      name: "Amelia",
-    },
-    {
-      id: 4,
-      name: "Derek",
-    },
-  ];
+  const [isLoading, setIsLoading] = useState(true);
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await getUsers({ offset: 0, limit: 10 });
+      if (response.success) {
+        setUsers(response.users);
+      } else {
+        Toast.show({
+          type: "error",
+          text1: response.message || "i",
+        });
+      }
+      setIsLoading(false);
+    })();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          width: "100%",
+          flex: 8,
+          backgroundColor: "white",
+          paddingVertical: 10,
+          paddingHorizontal: 25,
+        }}
+      >
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View
@@ -68,10 +98,11 @@ function UsersList() {
     >
       <FlatList
         data={users}
-        renderItem={({ item }) => <UserCard />}
+        renderItem={({ item }) => <UserCard id={item.id} email={item.email} />}
         style={{
           display: "flex",
           flexDirection: "column",
+          paddingRight: 20,
         }}
       />
     </View>

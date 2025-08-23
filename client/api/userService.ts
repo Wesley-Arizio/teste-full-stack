@@ -33,7 +33,6 @@ export async function createUser(
       user: response.data.user,
     };
   } catch (error) {
-    console.error(error);
     let message = "Internal Server Error";
     if (axios.isAxiosError(error)) {
       if (error.response) {
@@ -60,6 +59,45 @@ export async function createUser(
     return {
       success: false,
       message,
+    };
+  }
+}
+
+export interface GetUsersPagination {
+  offset: number;
+  limit: number;
+}
+
+export interface GetUsersResponse {
+  success?: boolean;
+  message?: string;
+  users: User[];
+}
+
+export async function getUsers({
+  offset,
+  limit,
+}: GetUsersPagination): Promise<GetUsersResponse> {
+  try {
+    const response = await apiClient.get("/user/list");
+
+    if (response.status != 200) {
+      return {
+        success: false,
+        message: response.data.message ?? "Internal Server Error",
+        users: [],
+      };
+    }
+
+    return {
+      success: true,
+      users: response.data.users,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: `A server error occurred. Please try again later.`,
+      users: [],
     };
   }
 }
