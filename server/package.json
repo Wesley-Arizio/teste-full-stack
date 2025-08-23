@@ -6,6 +6,8 @@
   "author": "Diego Jimenes",
   "license": "MIT",
   "scripts": {
+    "start": "node dist/main.js",
+    "build": "tsup src/main.ts --format cjs --dts --out-dir dist",
     "dev": "tsx watch src/main.ts",
     "docker-up": "docker-compose -f docker-compose.yml up --detach",
     "docker-down": "docker-compose stop"
