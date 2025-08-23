@@ -1,4 +1,3 @@
-// No topo do arquivo
 import "dotenv/config";
 
 export default {
