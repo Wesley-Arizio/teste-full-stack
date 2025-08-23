@@ -1,4 +1,5 @@
 import { View, TextInput, TouchableOpacity } from "react-native";
+import { Link } from "expo-router";
 
 import { Image } from "@rneui/base";
 
@@ -32,30 +33,32 @@ function Header() {
           paddingHorizontal: 15,
         }}
       />
-      <TouchableOpacity
-        onPress={() => {}}
-        style={{
-          width: 50,
-          height: 50,
-          borderRadius: 10,
-          display: "flex",
-          justifyContent: "center",
-          alignContent: "center",
-          alignItems: "center",
-          backgroundColor: "white",
-          borderColor: "#000000",
-          borderWidth: 1,
-        }}
-      >
-        <Image
-          accessibilityHint="Add a new user"
-          source={require("../assets/images/plus-solid-full.png")}
+
+      <Link href="/createUser" asChild>
+        <TouchableOpacity
           style={{
-            width: 25,
-            height: 25,
+            width: 50,
+            height: 50,
+            borderRadius: 10,
+            display: "flex",
+            justifyContent: "center",
+            alignContent: "center",
+            alignItems: "center",
+            backgroundColor: "white",
+            borderColor: "#000000",
+            borderWidth: 1,
           }}
-        />
-      </TouchableOpacity>
+        >
+          <Image
+            accessibilityHint="Add a new user"
+            source={require("../assets/images/plus-solid-full.png")}
+            style={{
+              width: 25,
+              height: 25,
+            }}
+          />
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 }
