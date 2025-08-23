@@ -130,6 +130,10 @@ export default function CreateUser() {
             disabled={isUpdating}
             onPress={submit}
             title="Update User"
+            buttonStyle={{
+              borderRadius: 10,
+              backgroundColor: "rgba(78, 116, 289, 1)",
+            }}
             accessibilityLabel="Update User Data"
           />
         </View>

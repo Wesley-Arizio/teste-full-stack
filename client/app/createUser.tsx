@@ -127,6 +127,10 @@ export default function CreateUser() {
         >
           <Button
             title="Create User"
+            buttonStyle={{
+              borderRadius: 10,
+              backgroundColor: "rgba(78, 116, 289, 1)",
+            }}
             accessibilityLabel="Submit New User"
             onPress={submit}
             disabled={disabled}
