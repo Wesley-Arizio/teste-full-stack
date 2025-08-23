@@ -4,11 +4,13 @@ import { User } from "./interfaces";
 
 import { format } from "date-fns";
 
-interface CreateUserResponse {
-  success?: boolean;
+interface BaseApiResponse<T> {
+  success: boolean;
   message?: string;
-  user?: User;
+  data?: T;
 }
+
+type CreateUserResponse = BaseApiResponse<User>;
 
 export async function createUser(
   user: Omit<User, "id">
@@ -30,7 +32,7 @@ export async function createUser(
     }
     return {
       success: true,
-      user: response.data.user,
+      data: response.data.user,
     };
   } catch (error) {
     let message = "Internal Server Error";
@@ -68,11 +70,7 @@ export interface GetUsersPagination {
   limit: number;
 }
 
-export interface GetUsersResponse {
-  success?: boolean;
-  message?: string;
-  users: User[];
-}
+export type GetUsersResponse = BaseApiResponse<User[]>;
 
 export async function getUsers({
   offset,
@@ -85,19 +83,40 @@ export async function getUsers({
       return {
         success: false,
         message: response.data.message ?? "Internal Server Error",
-        users: [],
       };
     }
 
     return {
       success: true,
-      users: response.data.users,
+      data: response.data.users,
     };
   } catch (error) {
     return {
       success: false,
       message: `A server error occurred. Please try again later.`,
-      users: [],
+    };
+  }
+}
+
+export async function getUser(id: string): Promise<BaseApiResponse<User>> {
+  try {
+    const response = await apiClient.get(`/user/${id}`);
+
+    if (response.status != 200) {
+      return {
+        success: false,
+        message: response.data.message ?? "Internal Server Error",
+      };
+    }
+
+    return {
+      success: true,
+      data: response.data.user,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: `A server error occurred. Please try again later.`,
     };
   }
 }
