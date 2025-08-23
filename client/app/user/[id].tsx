@@ -45,11 +45,12 @@ export default function UserDetails() {
   const [isLoading, setIsLoading] = useState(true);
   const params = useLocalSearchParams();
   const router = useRouter();
+
   useEffect(() => {
     const paramId = Array.isArray(params.id) ? params.id[0] : params.id;
 
     if (paramId) {
-      const fetchUser = async () => {
+      (async () => {
         const response = await getUser(paramId);
 
         if (response.success && response.data) {
@@ -63,9 +64,7 @@ export default function UserDetails() {
         }
 
         setIsLoading(false);
-      };
-
-      fetchUser();
+      })();
     } else {
       setIsLoading(false);
       Toast.show({

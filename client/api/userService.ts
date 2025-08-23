@@ -120,3 +120,58 @@ export async function getUser(id: string): Promise<BaseApiResponse<User>> {
     };
   }
 }
+
+export interface IUpdateUser {
+  id: string;
+  name: string;
+  address: string;
+}
+
+export async function updateUser({
+  id,
+  name,
+  address,
+}: IUpdateUser): Promise<BaseApiResponse<User>> {
+  try {
+    const response = await apiClient.put(`/user/${id}/edit`, {
+      user: {
+        name,
+        address,
+      },
+    });
+    if (response.status != 200) {
+      return {
+        success: false,
+        message: response.data.message || "",
+      };
+    }
+    return {
+      success: true,
+      data: response.data.user,
+    };
+  } catch (error) {
+    let message = "Internal Server Error";
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            const { error: isError, message: msg } = error.response.data;
+
+            if (isError && msg) {
+              const [errorMessage] = msg.fieldErrors.user;
+              message = errorMessage;
+            }
+            break;
+
+          default:
+            message = `A server error occurred (status ${error.response.status}). Please try again later.`;
+            break;
+        }
+      }
+    }
+    return {
+      success: false,
+      message,
+    };
+  }
+}

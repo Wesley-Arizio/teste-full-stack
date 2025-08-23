@@ -7,8 +7,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="index" options={{ title: "Home" }} />
         <Stack.Screen name="createUser" options={{ title: "Create User" }} />
-        <Stack.Screen name="updateUser" options={{ title: "Update User" }} />
-        <Stack.Screen name="user/[id]" options={{ title: "View User" }} />
+        <Stack.Screen name="user" options={{ headerShown: false }} />
       </Stack>
     </SafeAreaProvider>
   );
